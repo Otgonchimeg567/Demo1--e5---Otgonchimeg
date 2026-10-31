@@ -226,7 +226,7 @@
         }
         .footer-logo-text {
             font-family: 'General Sans', -apple-system, sans-serif;
-            font-size: 21.9vw;
+            font-size: 17vw; /* fallback; JS fits it exactly to the width */
             font-weight: 400;
             color: #ffffff;
             letter-spacing: -0.03em;
@@ -413,7 +413,7 @@
     </footer>
 
     <div class="footer-logo-wrap">
-        <h2 class="footer-logo-text">Loopstack</h2>
+        <h2 class="footer-logo-text">NewNomads</h2>
     </div>
 
     <div class="video-container">
@@ -456,6 +456,23 @@
                 wrapper.appendChild(inner);
                 logoText.appendChild(wrapper);
             });
+
+            // Scale the wordmark so the whole word fits the available width
+            const fitLogo = () => {
+                const wrappers = logoText.querySelectorAll('.letter-wrapper');
+                if (!wrappers.length) return;
+                logoText.style.fontSize = '';
+                const textWidth = wrappers[wrappers.length - 1].getBoundingClientRect().right
+                                - wrappers[0].getBoundingClientRect().left;
+                const available = logoText.clientWidth;
+                const current = parseFloat(getComputedStyle(logoText).fontSize);
+                if (textWidth > 0) {
+                    logoText.style.fontSize = `${current * (available / textWidth) * 0.98}px`;
+                }
+            };
+            fitLogo();
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLogo);
+            window.addEventListener('resize', fitLogo);
         }
 
         // Разделение верхнего заголовка на слова для анимации появления снизу вверх из маски с блюром
