@@ -230,8 +230,6 @@
             font-weight: 400;
             color: #ffffff;
             letter-spacing: -0.03em;
-            margin-right: -0.03em;
-            transform: translateX(-20px);
             line-height: 0.8;
             margin-top: 0;
             margin-bottom: 0;
@@ -371,7 +369,7 @@
     <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/loopstack-f8c64439bf/black_gradient.svg" alt="Top Gradient" id="top-gradient">
 
     <main class="hero-content">
-        <h1 class="hero-title">Хаалттай туршилтад <br> одоо бүртгүүлээрэй</h1>
+        <h1 class="hero-title">Бидэнтэй нэгдээрэй</h1>
         <button class="hero-btn">
             <span class="btn-text">Үзүүлэн захиалах</span>
             <span class="blinking-dot"></span>
@@ -413,7 +411,7 @@
     </footer>
 
     <div class="footer-logo-wrap">
-        <h2 class="footer-logo-text">happy automation</h2>
+        <h2 class="footer-logo-text">Happy automation</h2>
     </div>
 
     <div class="video-container">
@@ -467,11 +465,16 @@
                 const available = logoText.clientWidth;
                 const current = parseFloat(getComputedStyle(logoText).fontSize);
                 if (textWidth > 0) {
-                    logoText.style.fontSize = `${current * (available / textWidth) * 0.98}px`;
+                    logoText.style.fontSize = `${current * (available / textWidth) * 0.95}px`;
                 }
             };
             fitLogo();
-            if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLogo);
+            // Refit whenever a web font finishes loading, since it changes the word's width
+            if (document.fonts) {
+                document.fonts.ready.then(fitLogo);
+                document.fonts.addEventListener('loadingdone', fitLogo);
+            }
+            window.addEventListener('load', fitLogo);
             window.addEventListener('resize', fitLogo);
         }
 
